@@ -1,7 +1,15 @@
 {
   "name": "koishi-plugin-milk-ikun",
   "description": "让您的机器人不再是 小黑子",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "author": {
+    "name": "爱喝牛奶",
+    "url": "https://github.com/zhuhansan666"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zhuhansan666/koishi-plugin-milk-ikun.git"
+  },
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -9,7 +17,9 @@
     "dist"
   ],
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "test": "src\\index.ts"
+  },
   "keywords": [
     "chatbot",
     "koishi",
