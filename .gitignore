@@ -16,4 +16,4 @@ tsconfig.tsbuildinfo
 *.njsproj
 *.sln
 
-path.bat
+push.bat
