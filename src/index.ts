@@ -1,9 +1,12 @@
 import { Context, Dict, Schema, Session } from 'koishi'
-import {  } from '@koishijs/plugin-config'
+import { } from '@koishijs/plugin-config'
+import { } from '@koishijs/plugin-help'
+// import { } from '@koishijs/plugin-explorer'
 
-import { allows, logger } from './contants'
+import { logger } from './contants'
 import { countryCheck } from './common/verifier'
 
+export const using = []
 export const name = 'milk-ikun'
 export let usage = `
 # koishi-plugin-milk-ikun
@@ -14,6 +17,8 @@ export let usage = `
         <img src="https://img.shields.io/npm/v/koishi-plugin-milk-ikun?color=527dec&label=&">
     </a>
 </h3>
+
+${process.env.KOISHI_ENV === 'browser' ? '**注意: 您所在的环境 (Koishi Online) 不支持监测您所在的国家与地区是否符合执行标准**' : ''}
 `
 
 export interface Config {
@@ -31,33 +36,24 @@ export let Config: Schema<Config> | any = Schema.object({
         })
         .role('table')
         .description('将指定关键字 key 替换为 value **支持正则表达式**'),
+    test: Schema.path({ allowCreate: true })
 })
 
 export async function apply(ctx: Context, config: Config) {
-    if (!await countryCheck(ctx)) {
-        usage = `# Your country or region is not supported because of cultural reasons.`
-        Config = Schema.object({})
-        logger.error(`unsupported country or region! stop loading ${name}!`)
-        return
+    if (process.env.KOISHI_ENV !== 'browser') {
+        if (!await countryCheck(ctx)) {
+            usage = `# Your country or region is not supported because of cultural difference.`
+            Config = Schema.object({})
+            logger.error(`unsupported country or region! stop loading ${name}!`)
+            return
+        }
+    } else {
+        logger.debug(`in Koishi Online, skip country or region check`)
     }
 
     // eventName: before-send
     ctx.on('before-send', (session: Session) => {
         // 返回值 true 拒绝发送, false/undefined/void 放行发送, 并且在这里改 session.context = * 有用
-        for (const pluginName in allows) {
-            const allow = allows[pluginName]
-
-            let result = null
-            try {
-                result = globalThis[pluginName]['__ikun']()
-            } catch(error) {}  // pass
-
-            if (result && result === allow) {
-                logger.debug(`plugin: ${pluginName}, passed!`)
-                return false  // 直接放行
-            }
-        }
-
         for (const key in config.ikunKeywords) {
             session.content = session.content.replace(new RegExp(key), config.ikunKeywords[key])
         }
