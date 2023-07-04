@@ -17,8 +17,6 @@ export let usage = `
         <img src="https://img.shields.io/npm/v/koishi-plugin-milk-ikun?color=527dec&label=&">
     </a>
 </h3>
-
-${process.env.KOISHI_ENV === 'browser' ? '**注意: 您所在的环境 (Koishi Online) 不支持监测您所在的国家与地区是否符合执行标准**' : ''}
 `
 
 export interface Config {
@@ -40,15 +38,11 @@ export let Config: Schema<Config> | any = Schema.object({
 })
 
 export async function apply(ctx: Context, config: Config) {
-    if (process.env.KOISHI_ENV !== 'browser') {
-        if (!await countryCheck(ctx)) {
-            usage = `# Your country or region is not supported because of cultural difference.`
-            Config = Schema.object({})
-            logger.error(`unsupported country or region! stop loading ${name}!`)
-            return
-        }
-    } else {
-        logger.debug(`in Koishi Online, skip country or region check`)
+    if (!await countryCheck(ctx)) {
+        usage = `# Your country or region is not supported because of cultural difference.`
+        Config = Schema.object({})
+        logger.error(`unsupported country or region! stop loading ${name}!`)
+        return
     }
 
     // eventName: before-send

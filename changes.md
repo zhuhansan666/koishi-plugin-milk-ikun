@@ -1,3 +1,6 @@
+# V0.0.6
+1. fix: 使用 `Koishi Online` 环境安装将无法监测您所在的国家与地区是否符合执行标准
+
 # V0.0.5
 1. add: 对 `Koishi Online` 环境的支持
 
