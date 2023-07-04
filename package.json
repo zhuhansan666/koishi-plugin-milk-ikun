@@ -1,7 +1,7 @@
 {
     "name": "koishi-plugin-milk-ikun",
     "description": "让您的机器人不再是 小黑子",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "contributors": [
         "爱喝牛奶の涛哥 <zhuhansan666@outlook.com>"
     ],
@@ -41,11 +41,6 @@
         "description": {
             "zh": "让您的机器人不再是 小黑子!\n将小黑子的字符自动替换为其他字符 (可在配置项中设置)",
             "en": "Your country or region is not supported because of cultural difference.\nMay not be able to know what it is."
-        },
-        "service": {
-            "required": [
-                "explorer"
-            ]
         }
     }
 }
